@@ -83,7 +83,8 @@ function SignUp() {
 
     const onConfirmChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setConfirmPass(event.currentTarget.value);
-     }
+    }
+    
     const addUser = () => {
         let request = {
             method: "POST",

@@ -57,7 +57,7 @@ namespace HTDCapstoneASP.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "ADMIN")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, Course course)
+        public async Task<IActionResult> PutCourse(int id, [FromBody]Course course)
         {
             if (id != course.CourseId)
             {
@@ -82,14 +82,14 @@ namespace HTDCapstoneASP.Server.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Courses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "ADMIN")]
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Course>> PostCourse([FromBody]Course course)
         {
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();

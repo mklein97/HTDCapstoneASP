@@ -1,5 +1,5 @@
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { Course, Category } from "./Models";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FetchWrapper from "./FetchWrapper";
@@ -72,17 +72,24 @@ const CourseForm: React.FC<CourseFormProps> = ({ requiredRole }) => {
     }, [courseId])
 
     const postCourse = () => {
+        
         const init = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(course)
+            body: `{
+            "courseName": "${course.courseName}",
+            "courseDescription": "${course.courseDescription}",
+            "price": ${course.price},
+            "estimateDuration": ${course.estimateDuration},
+            "categoryId": ${course.category.categoryId}
+            }`
         }
 
         FetchWrapper("https://localhost:7130/api/courses", init)
             .then(response => {
-                if (response.ok || response.status === 400) {
+                if (response.status === 201 || response.status === 400) {
                     return response.json();
                 } else {
                     return Promise.reject("Unexpected status code: " + response.status);
@@ -92,6 +99,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ requiredRole }) => {
                 if (data !== undefined && data["courseId"] > 0) {
                     navigate("/courses");
                 } else {
+                    console.log(data)
                     setErrors(data);
                 }
             })
@@ -104,7 +112,14 @@ const CourseForm: React.FC<CourseFormProps> = ({ requiredRole }) => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(course)
+            body: `{
+            "courseId": ${course.courseId},
+            "courseName": "${course.courseName}",
+            "courseDescription": "${course.courseDescription}",
+            "price": ${course.price},
+            "estimateDuration": ${course.estimateDuration},
+            "categoryId": ${course.category.categoryId}
+            }`
         }
 
         FetchWrapper(`https://localhost:7130/api/courses/${courseId}`, init)
@@ -146,6 +161,15 @@ const CourseForm: React.FC<CourseFormProps> = ({ requiredRole }) => {
         }
     }
 
+    const displayErrors = () => {
+            let list: JSX.Element[] = [];
+            let count = 0;
+            errors.forEach(e => {
+                list.push(<li key={count+1} style={{ color: "lightcoral" }}>{e['errorMessage']}</li>)
+            })
+            return list;
+        }
+
     return (<>
         <div className="container my-5">
             <div className="row justify-content-center">
@@ -156,9 +180,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ requiredRole }) => {
                             <form onSubmit={onSubmit} id="courseForm">
                                 <div className="mb-3">
                                     <ul>
-                                        {errors.map((e: String) =>
-                                            <li key={e.length + (Math.random() * 100)} style={{ color: "lightcoral" }}>{e}</li>
-                                        )}
+                                        {displayErrors()}
                                     </ul>
                                 </div>
                                 {/* Course Name */}

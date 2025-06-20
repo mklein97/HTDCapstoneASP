@@ -38,5 +38,5 @@ public partial class Course
     public int CategoryId { get; set; }
 
     [ForeignKey("CategoryId")]
-    public virtual Category Category { get; set; } = null!;
+    public virtual Category? Category { get; set; }
 }
