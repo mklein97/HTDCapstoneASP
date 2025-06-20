@@ -1,0 +1,7 @@
+.user-card {
+    transition: transform 0.2s
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+}

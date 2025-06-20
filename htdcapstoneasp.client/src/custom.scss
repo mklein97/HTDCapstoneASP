@@ -1,0 +1,14 @@
+$primary: #6d3696; 
+
+.card {
+    background-color: #343a40 !important;
+    border: 1px solid #495057 !important;
+}
+
+.form-control, .form-select {
+    background-color: #495057 !important;
+    border-color: #6c757d !important;
+    color: #f8f9fa !important;
+}
+
+@import 'bootstrap';

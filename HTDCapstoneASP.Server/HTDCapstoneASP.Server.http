@@ -1,0 +1,6 @@
+@HTDCapstoneASP.Server_HostAddress = http://localhost:5172
+
+GET {{HTDCapstoneASP.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

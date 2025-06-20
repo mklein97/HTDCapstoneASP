@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HTDCapstoneASP.Server", "HTDCapstoneASP.Server\HTDCapstoneASP.Server.csproj", "{7C00A5B1-16FE-4F82-B94B-8CF42407178D}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "htdcapstoneasp.client", "htdcapstoneasp.client\htdcapstoneasp.client.esproj", "{80C0E693-B84A-434F-820F-ED6D0E7C956C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C00A5B1-16FE-4F82-B94B-8CF42407178D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C00A5B1-16FE-4F82-B94B-8CF42407178D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C00A5B1-16FE-4F82-B94B-8CF42407178D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C00A5B1-16FE-4F82-B94B-8CF42407178D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C0E693-B84A-434F-820F-ED6D0E7C956C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C0E693-B84A-434F-820F-ED6D0E7C956C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C0E693-B84A-434F-820F-ED6D0E7C956C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{80C0E693-B84A-434F-820F-ED6D0E7C956C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C0E693-B84A-434F-820F-ED6D0E7C956C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C0E693-B84A-434F-820F-ED6D0E7C956C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {360FD937-F774-4B35-9D1A-05EE69DD7E8A}
+	EndGlobalSection
+EndGlobal
