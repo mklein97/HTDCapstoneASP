@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { RegisterRequestDTO, RegisterResponseDTO, UserProfile } from "./Models";
 import FetchWrapper from "./FetchWrapper";
 
@@ -31,6 +31,7 @@ function SignUp() {
     const [textInputClass, setTextInputClass] = useState("form-control")
     const [registerRequestDTO, setRegisterRequestDTO] = useState(REQUEST_DEFAULT);
     const [errors, setErrors] = useState([]);
+    const [confirmPass, setConfirmPass] = useState('');
     const navigate = useNavigate();
 
     const { userId } = useParams();
@@ -67,7 +68,8 @@ function SignUp() {
         if (userId) {
             updateUser();
         } else {
-            addUser();
+            if (registerRequestDTO.password === confirmPass)
+                addUser();
         }
     }
 
@@ -79,6 +81,9 @@ function SignUp() {
         }));
     }
 
+    const onConfirmChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setConfirmPass(event.currentTarget.value);
+     }
     const addUser = () => {
         let request = {
             method: "POST",
@@ -90,7 +95,6 @@ function SignUp() {
 
         FetchWrapper(registerEndpoint, request)
             .then(response => {
-                console.log(response.body)
                 if (response.status === 201 || response.status === 400) {
                     return response.json();
                 } else {
@@ -98,6 +102,7 @@ function SignUp() {
                 }
             })
             .then(data => {
+                console.log(data)
                 if (data.userId) {
                     // TODO: maybe redirect to a confirmation page
                     navigate(linkToOnSuccess);
@@ -139,6 +144,15 @@ function SignUp() {
             .catch(console.log)
     }
 
+    const displayErrors = () => {
+        let list: JSX.Element[] = [];
+        let count = 0;
+        errors.forEach(e => {
+            list.push(<li key={count+1} style={{ color: "lightcoral" }}>{e['errorMessage']}</li>)
+        })
+        return list;
+    }
+
     return (<>
         <div className="container my-5">
             <div className="row justify-content-center">
@@ -149,16 +163,15 @@ function SignUp() {
                             <form onSubmit={onSubmit}>
 
                                 {/* Errors */}
-                                <div className="mb-3">
+                                <div className="">
                                     <ul>
-                                        {errors.map((e: String) =>
-                                            <li key={e.length + (Math.random() * 100)} style={{ color: "lightcoral" }}>{e}</li>
-                                        )}
+                                        {displayErrors()}
+                                        {registerRequestDTO.password !== confirmPass && <li style={{ color: "lightcoral" }}>Passwords do not match</li>}
                                     </ul>
                                 </div>
 
                                 {/* Email */}
-                                <div className="mb-3">
+                                <div className="">
                                     <label htmlFor="email" className="form-label mt-4">
                                         Email
                                     </label>
@@ -176,7 +189,7 @@ function SignUp() {
                                 {!userId && (
                                     <>
                                         {/* Username */}
-                                        <div className="mb-3">
+                                        <div className="">
                                             <label htmlFor="username" className="form-label mt-4">
                                                 Username
                                             </label>
@@ -191,7 +204,7 @@ function SignUp() {
                                         </div>
 
                                         {/* Password */}
-                                        <div className="mb-3">
+                                        <div className="">
                                             <label htmlFor="password" className="form-label mt-4">
                                                 Password
                                             </label>
@@ -206,7 +219,7 @@ function SignUp() {
                                         </div>
 
                                         {/* Confirm Password */}
-                                        {/* <div className="mb-3">
+                                        { <div className="">
                                             <label htmlFor="confirmPassword" className="form-label mt-4">
                                                 Confirm Password
                                             </label>
@@ -214,15 +227,15 @@ function SignUp() {
                                                 type="password"
                                                 className={textInputClass}
                                                 id="confirmPassword"
-                                                placeholder="Enter Password"
-                                                onChange={onValueChanged}
+                                                placeholder="Confirm Password"
+                                                onChange={onConfirmChanged}
                                             />
-                                        </div> */}
+                                        </div> }
                                     </>
                                 )}
 
                                 {/* First Name */}
-                                <div className="mb-3">
+                                <div className="">
                                     <label htmlFor="firstName" className="form-label mt-4">
                                         First Name
                                     </label>
@@ -238,7 +251,7 @@ function SignUp() {
                                 </div>
 
                                 {/* Last Name */}
-                                <div className="mb-3">
+                                <div className="">
                                     <label htmlFor="lastName" className="form-label mt-4">
                                         Last Name
                                     </label>
@@ -254,7 +267,7 @@ function SignUp() {
                                 </div>
 
                                 {/* Date of Birth */}
-                                <div className="mb-3">
+                                <div className="">
                                     <label htmlFor="dob" className="form-label mt-4">
                                     Date of Birth
                                     </label>

@@ -50,8 +50,6 @@ const CourseCard: React.FC<CourseCardProps> = ({courseData, userProfile, enrolle
         event.preventDefault();
         
         if (isAdding) {
-            console.log(userProfile)
-            console.log('EID: ' + comment.enrollmentId)
             let request = {
             method: "POST",
             headers: {

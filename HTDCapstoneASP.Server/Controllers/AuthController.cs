@@ -3,6 +3,8 @@ using HTDCapstoneASP.Server.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace HTDCapstoneASP.Server.Controllers
 {
@@ -67,14 +69,36 @@ namespace HTDCapstoneASP.Server.Controllers
         public ActionResult Register([FromBody]RegisterRequestDTO request)
         {
             var newAppUser = new AppUser() { UserName = request.UserName, PasswordHash = request.password, RoleId = request.roleId };
-            var addResult = _context.AppUsers.Add(newAppUser);
 
-            var newUserProfile = new UserProfile() {firstName = request.firstName, 
-                lastName = request.lastName, dob = request.dob, Email = request.email, appUserId = addResult.CurrentValues.GetValue<int>("AppUserId")};
-            _context.UserProfiles.Add(newUserProfile);
-            _context.SaveChanges();
+            var context = new ValidationContext(newAppUser, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
 
-            return Created("https://localhost:7130", new RegisterResponseDTO() { userId = newUserProfile.userId, username = request.UserName });
+            bool isValid = Validator.TryValidateObject(newAppUser, context, validationResults, true);
+
+            if (isValid)
+            {
+                var newUserProfile = new UserProfile()
+                {
+                    firstName = request.firstName,
+                    lastName = request.lastName,
+                    dob = request.dob,
+                    Email = request.email,
+                };
+
+                context = new ValidationContext(newUserProfile, serviceProvider: null, items: null);
+                if (!Validator.TryValidateObject(newUserProfile, context, validationResults, true))
+                    return BadRequest(validationResults);
+
+                var addResult = _context.AppUsers.Add(newAppUser);
+                newUserProfile.appUserId = addResult.CurrentValues.GetValue<int>("AppUserId");
+                _context.UserProfiles.Add(newUserProfile);
+                _context.SaveChanges();
+
+                return Created("https://localhost:7130", new RegisterResponseDTO() { userId = newUserProfile.userId, username = request.UserName });
+
+            }
+
+            return BadRequest(validationResults);
         }
     }
 }
